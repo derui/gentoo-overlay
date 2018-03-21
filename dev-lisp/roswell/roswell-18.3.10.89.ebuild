@@ -15,7 +15,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND="sys-devel/automake dev-libs/openssl sys-libs/zlib"
-DEPEND="dev-lisp/sbcl ${RDEPEND}"
+DEPEND="${RDEPEND}"
 
 src_prepare() {
 	default
