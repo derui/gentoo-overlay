@@ -17,13 +17,7 @@ IUSE=""
 RDEPEND="sys-devel/automake >=dev-lang/go-1.9"
 DEPEND="${RDEPEND}"
 
-src_prepare() {
-	default
-	sh ${S}/bootstrap || die "could not configure"
-}
-
 src_compile() {
-	econf || die "could not configure"
 	emake || die "emake failed"
 }
 
