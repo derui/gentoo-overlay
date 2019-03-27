@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<repositories version="1.0">
+	<repo priority="50" quality="experimental" status="unofficial">
+		<name>derui-overlay</name>
+		<description>The overlay repository maintenanced by derui</description>
+		<homepage>https://github.com/derui/gentoo-overlay</homepage>
+		<owner>
+			<email>derutakayu@gmain.com</email>
+		</owner>
+		<source type="git">https://github.com/derui/gentoo-overlay.git</source>
+	</repo>
+</repositories>
