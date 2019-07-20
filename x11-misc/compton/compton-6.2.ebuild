@@ -15,7 +15,7 @@ fi
 
 LICENSE="MPL-2.0 MIT"
 SLOT="0"
-IUSE="dbus drm +doc libconfig +opengl +pcre python"
+IUSE="dbus drm +doc +libconfig +opengl +pcre python"
 
 RDEPEND="
 	dev-libs/libev
