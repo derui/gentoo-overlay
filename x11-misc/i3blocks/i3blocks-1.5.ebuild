@@ -16,8 +16,6 @@ LICENSE="GPL-3"
 RDEPEND=">=app-shells/bash-completion-2.0
          || ( x11-wm/i3 x11-wm/i3-gaps )"
 
-DEPEND="app-text/ronn"
-
 src_configure() {
     eautoreconf
     econf
