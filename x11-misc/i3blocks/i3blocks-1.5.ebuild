@@ -13,11 +13,16 @@ KEYWORDS="amd64 ~arm64 x86"
 SLOT="0"
 LICENSE="GPL-3"
 
-RDEPEND=">=app-shells/bash-completion-2.0
-         || ( x11-wm/i3 x11-wm/i3-gaps )"
+RDEPEND="|| ( x11-wm/i3 x11-wm/i3-gaps )"
+
+PATCHES=("${FILESDIR}/${PN}-disable-bash-completion.patch")
+
+src_prepare() {
+    default
+    eautoreconf
+}
 
 src_configure() {
-    eautoreconf
     econf
 }
 
