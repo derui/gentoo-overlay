@@ -47,11 +47,7 @@ BDEPEND="
 	>=dev-util/meson-0.53.0
 	virtual/pkgconfig
 "
-if [[ ${PV} == 9999 ]]; then
-	BDEPEND+="man? ( ~app-text/scdoc-9999 )"
-else
-	BDEPEND+="man? ( >=app-text/scdoc-1.9.3 )"
-fi
+BDEPEND+="man? ( >=app-text/scdoc-1.9.3 )"
 
 src_prepare() {
 	default
