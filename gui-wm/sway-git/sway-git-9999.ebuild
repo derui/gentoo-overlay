@@ -9,7 +9,7 @@ DESCRIPTION="i3-compatible Wayland window manager"
 HOMEPAGE="https://swaywm.org"
 
 inherit git-r3
-EGIT_REPO_URI="https://github.com/swaywm/${PN}.git"
+EGIT_REPO_URI="https://github.com/swaywm/sway.git"
 
 LICENSE="MIT"
 SLOT="0"

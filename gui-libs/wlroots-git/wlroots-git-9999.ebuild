@@ -8,7 +8,7 @@ inherit fcaps meson
 DESCRIPTION="Pluggable, composable, unopinionated modules for building a Wayland compositor"
 HOMEPAGE="https://github.com/swaywm/wlroots"
 
-EGIT_REPO_URI="https://github.com/swaywm/${PN}.git"
+EGIT_REPO_URI="https://github.com/swaywm/wlroots.git"
 inherit git-r3
 
 LICENSE="MIT"
