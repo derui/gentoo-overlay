@@ -36,7 +36,7 @@ DEPEND="
 	wallpapers? ( x11-libs/gdk-pixbuf:2[jpeg] )
 	X? ( x11-libs/libxcb:0= )
 "
-DEPEND+="gui-libs/wlroots-git-9999:=[elogind=,seatd=,systemd=,X=]"
+DEPEND+="~gui-libs/wlroots-git-9999:=[elogind=,seatd=,systemd=,X=]"
 RDEPEND="
 	x11-misc/xkeyboard-config
 	${DEPEND}
