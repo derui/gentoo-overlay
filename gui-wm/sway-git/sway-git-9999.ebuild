@@ -10,6 +10,7 @@ HOMEPAGE="https://swaywm.org"
 
 inherit git-r3
 EGIT_REPO_URI="https://github.com/swaywm/sway.git"
+KEYWORDS="amd64"
 
 LICENSE="MIT"
 SLOT="0"

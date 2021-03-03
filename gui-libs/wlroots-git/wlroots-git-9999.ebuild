@@ -11,6 +11,7 @@ HOMEPAGE="https://github.com/swaywm/wlroots"
 EGIT_REPO_URI="https://github.com/swaywm/wlroots.git"
 inherit git-r3
 
+KEYWORDS="amd64"
 LICENSE="MIT"
 SLOT="0/9999"
 IUSE="elogind icccm seatd systemd x11-backend X"
