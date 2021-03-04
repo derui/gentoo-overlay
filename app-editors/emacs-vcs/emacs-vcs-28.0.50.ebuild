@@ -12,6 +12,7 @@ EGIT_CHECKOUT_DIR="${WORKDIR}/emacs"
 EGIT_CHECKOUT_TYPE=shallow
 S="${EGIT_CHECKOUT_DIR}"
 SLOT="${PV%%.*}-vcs"
+KEYWORDS="amd64"
 
 DESCRIPTION="The extensible, customizable, self-documenting real-time display editor"
 HOMEPAGE="https://www.gnu.org/software/emacs/"
