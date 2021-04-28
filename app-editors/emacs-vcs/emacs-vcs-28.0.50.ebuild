@@ -18,7 +18,7 @@ DESCRIPTION="The extensible, customizable, self-documenting real-time display ed
 HOMEPAGE="https://www.gnu.org/software/emacs/"
 
 LICENSE="GPL-3+ FDL-1.3+ BSD HPND MIT W3C unicode PSF-2"
-IUSE="acl alsa aqua athena cairo dbus dynamic-loading games gconf gfile gif +gmp gpm gsettings gtk gui gzip-el harfbuzz imagemagick +inotify jpeg json kerberos lcms libxml2 livecd m17n-lib mailutils png selinux sound source ssl svg systemd +threads tiff toolkit-scroll-bars wide-int Xaw3d xft +xpm xwidgets zlib"
+IUSE="acl alsa aqua athena cairo dbus dynamic-loading games gconf gfile gif +gmp gpm gsettings gtk gui gzip-el harfbuzz imagemagick +inotify jpeg json kerberos lcms libxml2 livecd m17n-lib mailutils png selinux sound source ssl svg systemd +threads tiff toolkit-scroll-bars wide-int Xaw3d xft +xpm xwidgets zlib +native-comp"
 RESTRICT="test"
 
 RDEPEND="app-emacs/emacs-common[games?,gui(-)?]
@@ -40,6 +40,7 @@ RDEPEND="app-emacs/emacs-common[games?,gui(-)?]
 	ssl? ( net-libs/gnutls:0= )
 	systemd? ( sys-apps/systemd )
 	zlib? ( sys-libs/zlib )
+	native-comp? ( sys-devel/gcc[jit] )
 	gui? ( !aqua? (
 		x11-libs/libICE
 		x11-libs/libSM
@@ -151,6 +152,9 @@ src_configure() {
 		einfo "Configuring to build with Nextstep (Macintosh Cocoa) support"
 		myconf+=" --with-ns --disable-ns-self-contained"
 		myconf+=" --without-x"
+	elif use native-comp; then
+		einfo "Configuring to build with native compilation support"
+		myconf+=" --with-native-compilation"
 	else
 		myconf+=" --with-x --without-ns"
 		myconf+=" $(use_with gconf)"
