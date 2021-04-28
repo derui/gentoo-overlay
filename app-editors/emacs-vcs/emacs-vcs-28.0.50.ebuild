@@ -169,7 +169,7 @@ src_configure() {
 		myconf+=" $(use_with imagemagick)"
 
 		if use xft; then
-			myconf+=" --with-xft"
+			myconf+=" --without-xft"
 			myconf+=" $(use_with cairo)"
 			myconf+=" $(use_with harfbuzz)"
 			myconf+=" $(use_with m17n-lib libotf)"
@@ -316,6 +316,13 @@ src_install() {
 	fi
 
 	local cdir
+	if use native-comp; then
+		# copy native-lisp directory
+		cdir="/usr/share/emacs/${FULL_VERSION}/native-lisp"
+		insinto "${cdir}"
+		doins native-lisp/*.eln 
+	fi
+
 	if use source; then
 		cdir="/usr/share/emacs/${FULL_VERSION}/src"
 		insinto "${cdir}"
