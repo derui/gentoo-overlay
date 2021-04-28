@@ -315,14 +315,14 @@ src_install() {
 		assert "gzip .el failed"
 	fi
 
-	local cdir
 	if use native-comp; then
 		# copy native-lisp directory
-		cdir="/usr/share/emacs/${FULL_VERSION}/native-lisp"
-		insinto "${cdir}"
-		doins native-lisp/*.eln 
+		local nativedir="/usr/share/emacs/${FULL_VERSION}/native-lisp"
+		insinto "${nativedir}"
+		doins -r native-lisp/*
 	fi
 
+	local cdir
 	if use source; then
 		cdir="/usr/share/emacs/${FULL_VERSION}/src"
 		insinto "${cdir}"
