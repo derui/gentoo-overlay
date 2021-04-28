@@ -317,7 +317,7 @@ src_install() {
 
 	if use native-comp; then
 		# copy native-lisp directory
-		local nativedir="/usr/share/emacs/${FULL_VERSION}/native-lisp"
+        local nativedir="/usr/libexec/emacs/${FULL_VERSION}/${CHOST}/native-lisp"
 		insinto "${nativedir}"
 		doins -r native-lisp/*
 	fi
