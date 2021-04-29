@@ -152,9 +152,6 @@ src_configure() {
 		einfo "Configuring to build with Nextstep (Macintosh Cocoa) support"
 		myconf+=" --with-ns --disable-ns-self-contained"
 		myconf+=" --without-x"
-	elif use native-comp; then
-		einfo "Configuring to build with native compilation support"
-		myconf+=" --with-native-compilation"
 	else
 		myconf+=" --with-x --without-ns"
 		myconf+=" $(use_with gconf)"
@@ -250,6 +247,7 @@ src_configure() {
 		$(use_with ssl gnutls) \
 		$(use_with systemd libsystemd) \
 		$(use_with threads) \
+		$(use_with native-comp native-compilation) \
 		$(use_with wide-int) \
 		$(use_with zlib) \
 		${myconf}
@@ -266,7 +264,7 @@ src_compile() {
 		emake -C lisp all EMACS="${S}-build/src/emacs"
 	fi
 
-	emake
+	emake NATIVE_FULL_AOT=1
 }
 
 src_install() {
@@ -290,7 +288,6 @@ src_install() {
 	# avoid collision between slots, see bug #169033 e.g.
 	rm "${ED}"/usr/share/emacs/site-lisp/subdirs.el
 	rm -rf "${ED}"/usr/share/{appdata,applications,icons}
-	rm -rf "${ED}/usr/$(get_libdir)"
 	rm -rf "${ED}"/var
 
 	# remove unused <version>/site-lisp dir
@@ -313,13 +310,6 @@ src_install() {
 		find "${ED}"/usr/share/emacs/${FULL_VERSION}/lisp -type f \
 			-name "*.elc" -print | sed 's/\.elc$/.el/' | xargs gzip -9n
 		assert "gzip .el failed"
-	fi
-
-	if use native-comp; then
-		# copy native-lisp directory
-        local nativedir="/usr/libexec/emacs/${FULL_VERSION}/${CHOST}/native-lisp"
-		insinto "${nativedir}"
-		doins -r native-lisp/*
 	fi
 
 	local cdir
