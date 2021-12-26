@@ -18,7 +18,7 @@ DESCRIPTION="The extensible, customizable, self-documenting real-time display ed
 HOMEPAGE="https://www.gnu.org/software/emacs/"
 
 LICENSE="GPL-3+ FDL-1.3+ BSD HPND MIT W3C unicode PSF-2"
-IUSE="acl alsa aqua athena cairo dbus dynamic-loading games gconf gfile gif +gmp gpm gsettings gtk gui gzip-el harfbuzz imagemagick +inotify jpeg json kerberos lcms libxml2 livecd m17n-lib mailutils png selinux sound source ssl svg systemd +threads tiff toolkit-scroll-bars wide-int Xaw3d xft +xpm xwidgets zlib +native-comp"
+IUSE="acl alsa aqua athena cairo dbus dynamic-loading games gconf gfile gif +gmp gpm gsettings gtk gui gzip-el harfbuzz imagemagick +inotify jpeg json kerberos lcms libxml2 livecd m17n-lib mailutils png selinux sound source ssl svg systemd +threads tiff toolkit-scroll-bars wide-int Xaw3d xft +xpm xwidgets zlib +native-comp +pgtk"
 RESTRICT="test"
 
 RDEPEND="app-emacs/emacs-common[games?,gui(-)?]
@@ -164,6 +164,7 @@ src_configure() {
 		myconf+=" $(use_with tiff)"
 		myconf+=" $(use_with xpm)"
 		myconf+=" $(use_with imagemagick)"
+        myconf+=" $(use_with pgtk)"
 
 		if use xft; then
 			myconf+=" --without-xft"
