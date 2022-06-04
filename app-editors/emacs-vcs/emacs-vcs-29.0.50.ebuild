@@ -1,85 +1,62 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit autotools elisp-common flag-o-matic readme.gentoo-r1 toolchain-funcs
+inherit autotools elisp-common readme.gentoo-r1 toolchain-funcs
 
 inherit git-r3
-EGIT_REPO_URI="https://github.com/emacs-mirror/emacs.git"
+EGIT_REPO_URI="https://git.savannah.gnu.org/git/emacs.git"
 EGIT_BRANCH="master"
 EGIT_CHECKOUT_DIR="${WORKDIR}/emacs"
 EGIT_CHECKOUT_TYPE=shallow
 S="${EGIT_CHECKOUT_DIR}"
 SLOT="${PV%%.*}-vcs"
-KEYWORDS="amd64"
 
 DESCRIPTION="The extensible, customizable, self-documenting real-time display editor"
 HOMEPAGE="https://www.gnu.org/software/emacs/"
 
 LICENSE="GPL-3+ FDL-1.3+ BSD HPND MIT W3C unicode PSF-2"
-IUSE="acl alsa aqua athena cairo dbus dynamic-loading games gconf gfile gif +gmp gpm gsettings gtk gui gzip-el harfbuzz imagemagick +inotify jpeg json kerberos lcms libxml2 livecd m17n-lib mailutils png selinux sound source ssl svg systemd +threads tiff toolkit-scroll-bars wide-int Xaw3d xft +xpm xwidgets zlib +native-comp +pgtk"
+IUSE="acl alsa aqua athena cairo dbus dynamic-loading games gfile gif +gmp gpm gsettings gtk gui gzip-el harfbuzz imagemagick +inotify jit jpeg json kerberos lcms libxml2 livecd m17n-lib mailutils motif png selinux sound source sqlite ssl svg systemd +threads tiff toolkit-scroll-bars webp wide-int +X Xaw3d xft +xpm xwidgets zlib"
 RESTRICT="test"
 
-RDEPEND="app-emacs/emacs-common[games?,gui(-)?]
-	sys-libs/ncurses:0=
-	acl? ( virtual/acl )
-	alsa? ( media-libs/alsa-lib )
-	dbus? ( sys-apps/dbus )
-	games? ( acct-group/gamestat )
-	gmp? ( dev-libs/gmp:0= )
-	gpm? ( sys-libs/gpm )
-	!inotify? ( gfile? ( >=dev-libs/glib-2.28.6 ) )
-	json? ( dev-libs/jansson )
-	kerberos? ( virtual/krb5 )
-	lcms? ( media-libs/lcms:2 )
-	libxml2? ( >=dev-libs/libxml2-2.2.0 )
-	mailutils? ( net-mail/mailutils[clients] )
-	!mailutils? ( acct-group/mail net-libs/liblockfile )
-	selinux? ( sys-libs/libselinux )
-	ssl? ( net-libs/gnutls:0= )
-	systemd? ( sys-apps/systemd )
-	zlib? ( sys-libs/zlib )
-	native-comp? ( sys-devel/gcc[jit] )
-	gui? ( !aqua? (
-		x11-libs/libICE
-		x11-libs/libSM
-		x11-libs/libX11
-		x11-libs/libXext
-		x11-libs/libXfixes
-		x11-libs/libXinerama
-		x11-libs/libXrandr
-		x11-libs/libxcb
-		x11-misc/xbitmaps
-		gconf? ( >=gnome-base/gconf-2.26.2 )
-		gsettings? ( >=dev-libs/glib-2.28.6 )
-		gif? ( media-libs/giflib:0= )
-		jpeg? ( virtual/jpeg:0= )
-		png? ( >=media-libs/libpng-1.4:0= )
-		svg? ( >=gnome-base/librsvg-2.0 )
-		tiff? ( media-libs/tiff:0 )
-		xpm? ( x11-libs/libXpm )
-		imagemagick? ( >=media-gfx/imagemagick-6.6.2:0= )
-		xft? (
-			media-libs/fontconfig
-			media-libs/freetype
-			x11-libs/libXft
-			x11-libs/libXrender
-			cairo? ( >=x11-libs/cairo-1.12.18 )
-			harfbuzz? ( media-libs/harfbuzz:0= )
-			m17n-lib? (
-				>=dev-libs/libotf-0.9.4
-				>=dev-libs/m17n-lib-1.5.1
-			)
+X_DEPEND="x11-libs/libICE
+	x11-libs/libSM
+	x11-libs/libX11
+	x11-libs/libXext
+	x11-libs/libXfixes
+	x11-libs/libXinerama
+	x11-libs/libXrandr
+	x11-libs/libxcb
+	x11-misc/xbitmaps
+	xpm? ( x11-libs/libXpm )
+	xft? (
+		media-libs/fontconfig
+		media-libs/freetype
+		x11-libs/libXft
+		x11-libs/libXrender
+		cairo? ( >=x11-libs/cairo-1.12.18 )
+		harfbuzz? ( media-libs/harfbuzz:0= )
+		m17n-lib? (
+			>=dev-libs/libotf-0.9.4
+			>=dev-libs/m17n-lib-1.5.1
 		)
-		gtk? (
-			x11-libs/gtk+:3
-			xwidgets? (
-				net-libs/webkit-gtk:4=
-				x11-libs/libXcomposite
-			)
+	)
+	gtk? (
+		x11-libs/gtk+:3
+		xwidgets? (
+			net-libs/webkit-gtk:4=
+			x11-libs/libXcomposite
 		)
-		!gtk? (
+	)
+	!gtk? (
+		motif? (
+			>=x11-libs/motif-2.3:0
+			x11-libs/libXpm
+			x11-libs/libXmu
+			x11-libs/libXt
+		)
+		!motif? (
 			Xaw3d? (
 				x11-libs/libXaw3d
 				x11-libs/libXmu
@@ -91,18 +68,69 @@ RDEPEND="app-emacs/emacs-common[games?,gui(-)?]
 				x11-libs/libXt
 			) )
 		)
-	) )"
+	)"
+
+RDEPEND="app-emacs/emacs-common[games?,gui(-)?]
+	sys-libs/ncurses:0=
+	acl? ( virtual/acl )
+	alsa? ( media-libs/alsa-lib )
+	dbus? ( sys-apps/dbus )
+	games? ( acct-group/gamestat )
+	gmp? ( dev-libs/gmp:0= )
+	gpm? ( sys-libs/gpm )
+	!inotify? ( gfile? ( >=dev-libs/glib-2.28.6 ) )
+	jit? ( sys-devel/gcc:=[jit(-)] )
+	json? ( dev-libs/jansson:= )
+	kerberos? ( virtual/krb5 )
+	lcms? ( media-libs/lcms:2 )
+	libxml2? ( >=dev-libs/libxml2-2.2.0 )
+	mailutils? ( net-mail/mailutils[clients] )
+	!mailutils? ( acct-group/mail net-libs/liblockfile )
+	selinux? ( sys-libs/libselinux )
+	sqlite? ( dev-db/sqlite:3 )
+	ssl? ( net-libs/gnutls:0= )
+	systemd? ( sys-apps/systemd )
+	zlib? ( sys-libs/zlib )
+	gui? (
+		gif? ( media-libs/giflib:0= )
+		jpeg? ( media-libs/libjpeg-turbo:0= )
+		png? ( >=media-libs/libpng-1.4:0= )
+		svg? ( >=gnome-base/librsvg-2.0 )
+		tiff? ( media-libs/tiff:0 )
+		webp? ( media-libs/libwebp:0= )
+		imagemagick? ( >=media-gfx/imagemagick-6.6.2:0= )
+		!aqua? (
+			gsettings? ( >=dev-libs/glib-2.28.6 )
+			gtk? ( !X? (
+				media-libs/fontconfig
+				media-libs/freetype
+				>=x11-libs/cairo-1.12.18
+				x11-libs/gtk+:3
+				harfbuzz? ( media-libs/harfbuzz:0= )
+				m17n-lib? (
+					>=dev-libs/libotf-0.9.4
+					>=dev-libs/m17n-lib-1.5.1
+				)
+				xwidgets? ( net-libs/webkit-gtk:4= )
+			) )
+			!gtk? ( ${X_DEPEND} )
+			X? ( ${X_DEPEND} )
+		)
+	)"
 
 DEPEND="${RDEPEND}
-	gui? ( !aqua? ( x11-base/xorg-proto ) )"
+	gui? ( !aqua? (
+		!gtk? ( x11-base/xorg-proto )
+		X? ( x11-base/xorg-proto )
+	) )"
 
-BDEPEND="app-eselect/eselect-emacs
-	sys-apps/texinfo
+BDEPEND="sys-apps/texinfo
 	virtual/pkgconfig
 	gzip-el? ( app-arch/gzip )"
 
-RDEPEND="${RDEPEND}
-	app-eselect/eselect-emacs"
+IDEPEND="app-eselect/eselect-emacs"
+
+RDEPEND+=" ${IDEPEND}"
 
 EMACS_SUFFIX="emacs-${SLOT}"
 SITEFILE="20${EMACS_SUFFIX}-gentoo.el"
@@ -117,7 +145,19 @@ src_prepare() {
 	[[ ${FULL_VERSION} =~ ^${PV%.*}(\..*)?$ ]] \
 		|| die "Upstream version number changed to ${FULL_VERSION}"
 
-	eapply_user
+	if use jit; then
+		# These files ignore LDFLAGS. We assign the variable here, because
+		# for live ebuilds FULL_VERSION doesn't exist in global scope
+		QA_FLAGS_IGNORED="usr/$(get_libdir)/emacs/${FULL_VERSION}/native-lisp/.*"
+
+		# gccjit doesn't play well with ccache or distcc #801580
+		# For now, work around the problem with an explicit LIBRARY_PATH
+		has ccache ${FEATURES} || has distcc ${FEATURES} && tc-is-gcc \
+			&& export LIBRARY_PATH=$("$(tc-getCC)" -print-search-dirs \
+				| sed -n '/^libraries:/{s:^[^/]*::;p}')
+	fi
+
+	default
 
 	# Fix filename reference in redirected man page
 	sed -i -e "/^\\.so/s/etags/&-${EMACS_SUFFIX}/" doc/man/ctags.1 || die
@@ -126,15 +166,6 @@ src_prepare() {
 }
 
 src_configure() {
-	strip-flags
-	filter-flags -pie					#526948
-
-	if use ia64; then
-		replace-flags "-O[2-9]" -O1		#325373
-	else
-		replace-flags "-O[3-9]" -O2
-	fi
-
 	local myconf
 
 	if use alsa; then
@@ -145,29 +176,44 @@ src_configure() {
 		myconf+=" --with-sound=$(usex sound oss)"
 	fi
 
+	# Emacs supports these window systems:
+	# X11, pure GTK (without X11), or Nextstep (Aqua/Cocoa).
+	# General GUI support is enabled by the "gui" USE flag, then
+	# the window system is selected as follows:
+	#   "aqua" -> Nextstep
+	#   "gtk -X" -> pure GTK
+	#   otherwise -> X11
+	# For X11 there is the further choice of toolkits GTK, Motif,
+	# Athena (Lucid), or no toolkit. They are enabled (in order of
+	# preference) with the "gtk", "motif", "Xaw3d", and "athena" flags.
+
 	if ! use gui; then
 		einfo "Configuring to build without window system support"
-		myconf+=" --without-x --without-ns"
+		myconf+=" --without-x --without-pgtk --without-ns"
 	elif use aqua; then
 		einfo "Configuring to build with Nextstep (Macintosh Cocoa) support"
 		myconf+=" --with-ns --disable-ns-self-contained"
-		myconf+=" --without-x"
+		myconf+=" --without-x --without-pgtk"
+	elif use gtk && ! use X; then
+		einfo "Configuring to build with pure GTK (without X11) support"
+		myconf+=" --with-pgtk --without-x --without-ns"
+		myconf+=" --with-toolkit-scroll-bars" #836392
+		myconf+=" --without-gconf"
+		myconf+=" $(use_with gsettings)"
+		myconf+=" $(use_with harfbuzz)"
+		myconf+=" $(use_with m17n-lib libotf)"
+		myconf+=" $(use_with m17n-lib m17n-flt)"
+		myconf+=" $(use_with xwidgets)"
 	else
-		myconf+=" --with-x --without-ns"
-		myconf+=" $(use_with gconf)"
+		# X11
+		myconf+=" --with-x --without-pgtk --without-ns"
+		myconf+=" --without-gconf"
 		myconf+=" $(use_with gsettings)"
 		myconf+=" $(use_with toolkit-scroll-bars)"
-		myconf+=" $(use_with gif)"
-		myconf+=" $(use_with jpeg)"
-		myconf+=" $(use_with png)"
-		myconf+=" $(use_with svg rsvg)"
-		myconf+=" $(use_with tiff)"
 		myconf+=" $(use_with xpm)"
-		myconf+=" $(use_with imagemagick)"
-        myconf+=" $(use_with pgtk)"
 
 		if use xft; then
-			myconf+=" --without-xft"
+			myconf+=" --with-xft"
 			myconf+=" $(use_with cairo)"
 			myconf+=" $(use_with harfbuzz)"
 			myconf+=" $(use_with m17n-lib libotf)"
@@ -192,13 +238,20 @@ src_configure() {
 				See <https://gitlab.gnome.org/GNOME/gtk/-/issues/221> and
 				<https://gitlab.gnome.org/GNOME/gtk/-/issues/2315>.
 				If you intend to use more than one display, then it is strongly
-				recommended that you compile Emacs with the Athena/Lucid
-				toolkit instead.
+				recommended that you compile Emacs with the Athena/Lucid or the
+				Motif toolkit instead.
 			EOF
 			myconf+=" --with-x-toolkit=gtk3 $(use_with xwidgets)"
-			for f in Xaw3d athena; do
+			for f in motif Xaw3d athena; do
 				use ${f} && ewarn \
 					"USE flag \"${f}\" has no effect if \"gtk\" is set."
+			done
+		elif use motif; then
+			einfo "Configuring to build with Motif toolkit"
+			myconf+=" --with-x-toolkit=motif"
+			for f in Xaw3d athena; do
+				use ${f} && ewarn \
+					"USE flag \"${f}\" has no effect if \"motif\" is set."
 			done
 		elif use athena || use Xaw3d; then
 			einfo "Configuring to build with Athena/Lucid toolkit"
@@ -211,6 +264,17 @@ src_configure() {
 			"USE flag \"xwidgets\" has no effect if \"gtk\" is not set."
 	fi
 
+	if use gui; then
+		# Common flags recognised for all GUIs
+		myconf+=" $(use_with gif)"
+		myconf+=" $(use_with jpeg)"
+		myconf+=" $(use_with png)"
+		myconf+=" $(use_with svg rsvg)"
+		myconf+=" $(use_with tiff)"
+		myconf+=" $(use_with webp)"
+		myconf+=" $(use_with imagemagick)"
+	fi
+
 	if tc-is-cross-compiler; then
 		# Configure a CBUILD directory when cross-compiling to make tools
 		mkdir "${S}-build" && pushd "${S}-build" >/dev/null || die
@@ -218,6 +282,9 @@ src_configure() {
 		popd >/dev/null || die
 		# Don't try to execute the binary for dumping during the build
 		myconf+=" --with-dumping=none"
+	elif use m68k; then
+		# Workaround for https://debbugs.gnu.org/44531
+		myconf+=" --with-dumping=unexec"
 	else
 		myconf+=" --with-dumping=pdumper"
 	fi
@@ -239,16 +306,17 @@ src_configure() {
 		$(use_with games gameuser ":gamestat") \
 		$(use_with gmp libgmp) \
 		$(use_with gpm) \
+		$(use_with jit native-compilation) \
 		$(use_with json) \
 		$(use_with kerberos) $(use_with kerberos kerberos5) \
 		$(use_with lcms lcms2) \
 		$(use_with libxml2 xml2) \
 		$(use_with mailutils) \
 		$(use_with selinux) \
+		$(use_with sqlite sqlite3) \
 		$(use_with ssl gnutls) \
 		$(use_with systemd libsystemd) \
 		$(use_with threads) \
-		$(use_with native-comp native-compilation) \
 		$(use_with wide-int) \
 		$(use_with zlib) \
 		${myconf}
@@ -265,7 +333,7 @@ src_compile() {
 		emake -C lisp all EMACS="${S}-build/src/emacs"
 	fi
 
-	emake NATIVE_FULL_AOT=1
+	emake
 }
 
 src_install() {
@@ -273,6 +341,7 @@ src_install() {
 
 	mv "${ED}"/usr/bin/{emacs-${FULL_VERSION}-,}${EMACS_SUFFIX} || die
 	mv "${ED}"/usr/share/man/man1/{emacs-,}${EMACS_SUFFIX}.1 || die
+	mv "${ED}"/usr/share/metainfo/{emacs-,}${EMACS_SUFFIX}.metainfo.xml || die
 
 	# move info dir to avoid collisions with the dir file generated by portage
 	mv "${ED}"/usr/share/info/${EMACS_SUFFIX}/dir{,.orig} || die
@@ -286,15 +355,16 @@ src_install() {
 	fi
 
 	# avoid collision between slots, see bug #169033 e.g.
-	rm "${ED}"/usr/share/emacs/site-lisp/subdirs.el
-	rm -rf "${ED}"/usr/share/{appdata,applications,icons}
-	rm -rf "${ED}"/var
+	rm "${ED}"/usr/share/emacs/site-lisp/subdirs.el || die
+	rm -rf "${ED}"/usr/share/{applications,icons} || die
+	rm -rf "${ED}/usr/$(get_libdir)/systemd" || die
+	rm -rf "${ED}"/var || die
 
 	# remove unused <version>/site-lisp dir
-	rm -rf "${ED}"/usr/share/emacs/${FULL_VERSION}/site-lisp
+	rm -rf "${ED}"/usr/share/emacs/${FULL_VERSION}/site-lisp || die
 
 	# remove COPYING file (except for etc/COPYING used by describe-copying)
-	rm "${ED}"/usr/share/emacs/${FULL_VERSION}/lisp/COPYING
+	rm "${ED}"/usr/share/emacs/${FULL_VERSION}/lisp/COPYING || die
 
 	if use systemd; then
 		insinto /usr/lib/systemd/user
@@ -347,7 +417,7 @@ src_install() {
 
 	if use gui && use aqua; then
 		dodir /Applications/Gentoo
-		rm -rf "${ED}"/Applications/Gentoo/${EMACS_SUFFIX^}.app
+		rm -rf "${ED}"/Applications/Gentoo/${EMACS_SUFFIX^}.app || die
 		mv nextstep/Emacs.app \
 			"${ED}"/Applications/Gentoo/${EMACS_SUFFIX^}.app || die
 	fi
@@ -393,9 +463,6 @@ pkg_postinst() {
 		# force an update of the emacs symlink for the livecd/dvd,
 		# because some microemacs packages set it with USE=livecd
 		eselect emacs update
-	elif [[ $(readlink "${EROOT}"/usr/bin/emacs) = ${EMACS_SUFFIX} ]]; then
-		# refresh symlinks in case any installed files have changed
-		eselect emacs set ${EMACS_SUFFIX}
 	else
 		eselect emacs update ifunset
 	fi
