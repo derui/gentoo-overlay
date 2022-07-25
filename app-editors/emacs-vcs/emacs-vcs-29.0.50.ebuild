@@ -136,14 +136,13 @@ EMACS_SUFFIX="emacs-${SLOT}"
 SITEFILE="20${EMACS_SUFFIX}-gentoo.el"
 
 src_prepare() {
-	FULL_VERSION=$(sed -n 's/^AC_INIT([^,]*,[ \t]*\([^ \t,)]*\).*/\1/p' \
+	FULL_VERSION=$(sed -n 's/^AC_INIT([^,]*,[ \t]*\[\([^ \t,)]*\)\].*/\1/p' \
 		configure.ac)
 	[[ ${FULL_VERSION} ]] || die "Cannot determine current Emacs version"
 	einfo "Emacs branch: ${EGIT_BRANCH}"
 	einfo "Commit: ${EGIT_VERSION}"
 	einfo "Emacs version number: ${FULL_VERSION}"
-	[[ ${FULL_VERSION} =~ ^${PV%.*}(\..*)?$ ]] \
-		|| die "Upstream version number changed to ${FULL_VERSION}"
+	[[ ${FULL_VERSION} =~ ${PV%.*}(\..*)? ]] || die "Upstream version number changed to ${FULL_VERSION}"
 
 	if use jit; then
 		# These files ignore LDFLAGS. We assign the variable here, because
@@ -197,7 +196,7 @@ src_configure() {
 	elif use gtk && ! use X; then
 		einfo "Configuring to build with pure GTK (without X11) support"
 		myconf+=" --with-pgtk --without-x --without-ns"
-		myconf+=" --with-toolkit-scroll-bars" #836392
+		# myconf+=" --with-toolkit-scroll-bars" #836392
 		myconf+=" --without-gconf"
 		myconf+=" $(use_with gsettings)"
 		myconf+=" $(use_with harfbuzz)"
